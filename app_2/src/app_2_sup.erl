@@ -4,7 +4,18 @@
 -behaviour(supervisor).
 
 start_link() ->
-  supervisor:start_link(app_2_sup, []).
+  supervisor:start_link(?MODULE, []).
+  % supervisor:start_link(app_2_sup, []).
 
 init(_Args) ->
-  {ok, {one_for_one, 1, 60}, []}.
+  {ok,
+    {
+      {one_for_one, 10, 60},
+      [
+        {fw1, {app_2_child, start_link, []},
+          permanent, brutal_kill, worker, dynamic
+        }
+      ]
+    }
+  }.
+  

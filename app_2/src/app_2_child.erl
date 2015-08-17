@@ -3,7 +3,7 @@
 -export([start_link/0, loop/0]).
 
 start_link() ->
-  Pid = spawn(?MODULE, loop, []),
+  Pid = spawn_link(?MODULE, loop, []),
   register(receiver, Pid),
   {ok, Pid}.
 
@@ -17,3 +17,5 @@ loop() ->
       io:format("Message: ~p~n", [Message]),
       loop()
   end.
+
+% spawn(fun() -> loop() end).
